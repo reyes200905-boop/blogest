@@ -1,0 +1,512 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Mi blog estudiantil</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&family=Caveat:wght@600&display=swap">
+<style>
+/* Layout: dos vistas del mismo cuaderno. Portada (lomo con espirales y hoja cuadriculada) y página de inicio del blog (barra azul, entradas a la izquierda, "sobre mí" y tareas a la derecha). */
+:root {
+  --paper: #ffffff;
+  --ground: #eaf1ff;
+  --ink: #0e2150;
+  --ink-soft: #4a5f91;
+  --grid: #dbe6fb;
+  --accent: #1f4fd8;
+  --accent-ink: #ffffff;
+  --soft: color-mix(in srgb, var(--accent) 11%, #ffffff);
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", sans-serif;
+  --font-body: "DM Sans", "Segoe UI", sans-serif;
+  --font-hand: "Caveat", "Segoe Print", cursive;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  padding-block: 28px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+button, input, select { font: inherit; color: inherit; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- Portada ---------- */
+.cover {
+  width: 80%;
+  min-height: calc(80vh - 56px);
+  min-height: calc(80dvh - 56px);
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  background: var(--paper);
+  border-radius: 6px 22px 22px 6px;
+  overflow: hidden;
+  box-shadow: 0 2px 0 var(--accent), 0 24px 48px -20px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.binding {
+  background: var(--accent);
+  background-image: radial-gradient(circle at 50% 50%, var(--ground) 0 8px, transparent 9px);
+  background-size: 100% 52px;
+  background-position: 0 14px;
+  transition: background-color .3s;
+}
+.sheet {
+  min-width: 0;
+  padding: clamp(24px, 5vw, 48px);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 36px;
+}
+.top { display: flex; flex-wrap: wrap; gap: 10px 16px; justify-content: space-between; align-items: center; }
+.eyebrow {
+  font-size: 0.78rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--accent); background: var(--paper); padding: 4px 10px; border: 1.5px solid var(--accent); border-radius: 4px;
+}
+.date { font-size: 0.85rem; color: var(--ink-soft); background: var(--paper); padding: 2px 8px; }
+h1 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.6rem, 9vw, 7.5rem);
+  line-height: 1.14;
+  letter-spacing: -.03em;
+  text-wrap: balance;
+}
+h1 .l1 { position: relative; z-index: 1; }
+h1 .hl {
+  color: var(--accent-ink);
+  background: linear-gradient(var(--accent), var(--accent)) no-repeat 0 60% / 100% 78%;
+  padding: 0 .14em;
+  margin-left: -.04em;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+  transition: background-color .3s;
+}
+.lead { margin: 14px 0 0; max-width: 34ch; color: var(--ink-soft); background: var(--paper); display: inline-block; }
+.people { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 18px; }
+.person {
+  background: var(--paper);
+  border: 2px solid var(--ink);
+  border-radius: 14px;
+  padding: 14px 16px 16px;
+  min-width: 0;
+  transition: border-color .2s, transform .2s;
+}
+.person:focus-within { border-color: var(--accent); transform: translateY(-3px); }
+.person label { display: block; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); margin-bottom: 8px; }
+.row { display: flex; align-items: center; gap: 12px; }
+.avatar {
+  flex: none; width: 46px; height: 46px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-family: var(--font-display); font-weight: 800; font-size: 1.05rem;
+  transition: background-color .3s, color .3s, border-color .3s;
+}
+.avatar.me { background: var(--accent); color: var(--accent-ink); }
+.avatar.mate { background: var(--paper); color: var(--accent); border: 2px dashed var(--accent); }
+.person input {
+  min-width: 0; width: 100%;
+  font-family: var(--font-hand); font-weight: 600; font-size: 1.7rem; color: var(--ink);
+  background: transparent; border: 0; border-bottom: 2px solid var(--grid);
+  padding: 2px 0; outline: none; border-radius: 0;
+}
+.person input::placeholder { color: #9aaedb; }
+.person input:focus { border-bottom-color: var(--accent); }
+.person input:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.bottom { display: flex; flex-wrap: wrap; gap: 16px 24px; align-items: center; justify-content: space-between; }
+.foot { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; background: var(--paper); padding: 8px 12px; border-radius: 10px; max-width: 100%; }
+.foot span { font-size: .85rem; color: var(--ink-soft); }
+.swatches { display: flex; gap: 10px; }
+.swatches button {
+  width: 30px; height: 30px; border-radius: 50%; cursor: pointer; padding: 0;
+  border: 3px solid var(--paper); box-shadow: 0 0 0 2px var(--ink-soft);
+  transition: transform .15s, box-shadow .15s;
+}
+.swatches button:hover { transform: scale(1.12); }
+.swatches button[aria-pressed="true"] { box-shadow: 0 0 0 3px var(--ink); }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  background: var(--accent); color: var(--accent-ink);
+  font-weight: 700; font-size: 1.05rem; text-decoration: none;
+  padding: 14px 24px; border: 0; border-radius: 12px; cursor: pointer;
+  box-shadow: 0 4px 0 color-mix(in srgb, var(--accent) 60%, #000);
+  transition: transform .15s, box-shadow .15s, background-color .3s;
+}
+.btn:hover { transform: translateY(-2px); box-shadow: 0 6px 0 color-mix(in srgb, var(--accent) 60%, #000); }
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 color-mix(in srgb, var(--accent) 60%, #000); }
+.btn.ghost { background: transparent; color: var(--accent-ink); box-shadow: none; border: 2px solid var(--accent-ink); padding: 8px 16px; font-size: .9rem; }
+.btn.ghost:hover { background: var(--accent-ink); color: var(--accent); }
+
+/* ---------- Página del blog ---------- */
+.blog {
+  width: 80%;
+  margin-inline: auto;
+  background: var(--paper);
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 2px 0 var(--accent), 0 24px 48px -20px color-mix(in srgb, var(--accent) 55%, transparent);
+}
+.bar {
+  display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between;
+  background: var(--accent); color: var(--accent-ink);
+  padding: 14px clamp(16px, 4vw, 36px);
+  transition: background-color .3s;
+}
+.brand { font-family: var(--font-display); font-weight: 800; font-size: 1.15rem; letter-spacing: -.01em; }
+.welcome {
+  padding: clamp(24px, 5vw, 48px) clamp(16px, 4vw, 36px);
+  background-color: var(--soft);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 28px 28px;
+  border-bottom: 2px solid var(--ink);
+}
+.welcome h2 {
+  margin: 0; font-family: var(--font-display); font-weight: 800;
+  font-size: clamp(2rem, 6vw, 4.2rem); line-height: 1; letter-spacing: -.03em; text-wrap: balance;
+}
+.welcome h2 .who { color: var(--accent); }
+.welcome p { margin: 14px 0 0; max-width: 52ch; color: var(--ink-soft); font-size: 1.05rem; }
+.layout {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, 320px);
+  gap: clamp(20px, 3vw, 36px);
+  padding: clamp(18px, 4vw, 36px) clamp(16px, 4vw, 36px) clamp(24px, 4vw, 44px);
+}
+.layout > * { min-width: 0; }
+h3 { margin: 0 0 12px; font-family: var(--font-display); font-weight: 800; font-size: 1.35rem; letter-spacing: -.01em; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.chip {
+  cursor: pointer; padding: 6px 14px; border-radius: 999px;
+  background: var(--paper); border: 2px solid var(--ink-soft); font-size: .9rem; font-weight: 500;
+  transition: background-color .15s, color .15s, border-color .15s;
+}
+.chip:hover { border-color: var(--accent); }
+.chip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.entries { display: grid; gap: 14px; margin: 0; padding: 0; list-style: none; }
+.entry {
+  border: 2px solid var(--ink); border-radius: 14px; padding: 14px 16px 16px; background: var(--paper);
+  transition: transform .2s, border-color .2s;
+}
+.entry:hover { transform: translateX(4px); border-color: var(--accent); }
+.meta { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; margin-bottom: 6px; font-size: .8rem; color: var(--ink-soft); }
+.tag { background: var(--soft); color: var(--accent); font-weight: 700; padding: 2px 10px; border-radius: 999px; }
+.tag.ex { background: transparent; border: 1.5px dashed var(--ink-soft); color: var(--ink-soft); font-weight: 500; }
+.entry h4 { margin: 0 0 4px; font-family: var(--font-display); font-size: 1.2rem; line-height: 1.2; }
+.entry p { margin: 0; color: var(--ink-soft); overflow-wrap: anywhere; }
+.empty { color: var(--ink-soft); padding: 18px; border: 2px dashed var(--grid); border-radius: 14px; }
+.composer {
+  margin-top: 22px; padding: 16px; border-radius: 14px; background: var(--soft);
+  display: grid; gap: 12px;
+}
+.composer h3 { margin: 0; }
+.fields { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 12px; }
+.composer label { display: grid; gap: 4px; font-size: .75rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-soft); }
+.composer input, .composer select {
+  width: 100%; min-width: 0; padding: 10px 12px; border: 2px solid var(--ink-soft); border-radius: 10px;
+  background: var(--paper); font-size: 1rem; text-transform: none; letter-spacing: 0; font-weight: 400; color: var(--ink);
+}
+.composer input:focus, .composer select:focus { border-color: var(--accent); outline: none; }
+.composer input:focus-visible, .composer select:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.hint { min-height: 1.3em; margin: 0; font-size: .85rem; color: var(--accent); font-weight: 500; }
+.composer .btn { justify-self: start; }
+.side { display: grid; gap: 18px; align-content: start; }
+.card { border: 2px solid var(--ink); border-radius: 14px; padding: 16px; background: var(--paper); }
+.about .row { margin-bottom: 12px; }
+.about .nm { font-family: var(--font-hand); font-size: 1.6rem; font-weight: 600; line-height: 1.1; overflow-wrap: anywhere; }
+.about .rl { display: block; font-family: var(--font-body); font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-soft); }
+.progress { height: 10px; border-radius: 999px; background: var(--grid); overflow: hidden; margin: 4px 0 12px; }
+.progress i { display: block; height: 100%; width: 0; background: var(--accent); border-radius: 999px; transition: width .3s, background-color .3s; }
+.tasks { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.tasks label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.tasks input { width: 20px; height: 20px; margin: 2px 0 0; flex: none; accent-color: var(--accent); }
+.tasks input:checked + span { text-decoration: line-through; color: var(--ink-soft); }
+.count { margin: 0 0 4px; font-size: .85rem; color: var(--ink-soft); }
+.pagefoot { padding: 14px clamp(16px, 4vw, 36px); border-top: 2px solid var(--grid); color: var(--ink-soft); font-size: .85rem; text-align: center; }
+
+@media (max-width: 860px) {
+  .layout { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 700px) {
+  .cover, .blog { width: 100%; }
+  .cover { min-height: calc(100dvh - 56px); }
+}
+@media (max-width: 480px) {
+  .cover { grid-template-columns: 30px minmax(0, 1fr); }
+  .binding { background-image: radial-gradient(circle at 50% 50%, var(--ground) 0 5px, transparent 6px); background-size: 100% 40px; }
+  .fields { grid-template-columns: minmax(0, 1fr); }
+  .btn { width: 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<main class="cover" id="view-cover">
+  <div class="binding" aria-hidden="true"></div>
+  <section class="sheet">
+    <div class="top">
+      <span class="eyebrow">Cuaderno digital</span>
+      <span class="date" id="date"></span>
+    </div>
+
+    <div>
+      <h1><span class="l1">Mi blog</span> <span class="hl">estudiantil</span></h1>
+      <p class="lead">Momentos divertidos que tengo con mis compañeros.</p>
+    </div>
+
+    <div class="people">
+      <div class="person">
+        <label for="author">Escrito por</label>
+        <div class="row">
+          <div class="avatar me" id="av-author" aria-hidden="true">?</div>
+          <input id="author" type="text" placeholder="Escribe tu nombre" maxlength="40" autocomplete="off">
+        </div>
+      </div>
+      <div class="person">
+        <label for="mate">Mi coleguio</label>
+        <div class="row">
+          <div class="avatar mate" id="av-mate" aria-hidden="true">+</div>
+          <input id="mate" type="text" placeholder="Nombre del coleguio" maxlength="40" autocomplete="off">
+        </div>
+      </div>
+    </div>
+
+    <div class="bottom">
+      <div class="foot">
+        <span>Color del cuaderno</span>
+        <div class="swatches" role="group" aria-label="Color del cuaderno">
+          <button type="button" data-color="#1f4fd8" aria-label="Azul cobalto" aria-pressed="true" style="background:#1f4fd8"></button>
+          <button type="button" data-color="#2e8bea" aria-label="Azul cielo" aria-pressed="false" style="background:#2e8bea"></button>
+          <button type="button" data-color="#050507" aria-label="Negro" aria-pressed="false" style="background:#050507"></button>
+          <button type="button" data-color="#12296b" aria-label="Azul marino" aria-pressed="false" style="background:#12296b"></button>
+        </div>
+      </div>
+      <a class="btn" href="#blog">Abrir mi blog <span aria-hidden="true">&rarr;</span></a>
+    </div>
+  </section>
+</main>
+
+<main class="blog" id="view-blog" hidden>
+  <div class="bar">
+    <span class="brand">Mi blog estudiantil</span>
+    <a class="btn ghost" href="#portada"><span aria-hidden="true">&larr;</span> Ver portada</a>
+  </div>
+
+  <header class="welcome">
+    <h2>Hola, soy <span class="who" id="who-author">estudiante</span></h2>
+    <p>Aquí guardo lo que aprendo cada semana: resúmenes, experimentos y lecturas. <span id="who-mate-line">Pronto sumaré a mi colega.</span></p>
+  </header>
+
+  <div class="layout">
+    <section aria-labelledby="h-entries">
+      <h3 id="h-entries">Últimas entradas</h3>
+      <div class="chips" id="chips" role="group" aria-label="Filtrar por materia"></div>
+      <ul class="entries" id="entries"></ul>
+
+      <form class="composer" id="composer" novalidate>
+        <h3>Escribir una entrada</h3>
+        <div class="fields">
+          <label for="post-title">Título
+            <input id="post-title" type="text" maxlength="80" placeholder="Ej. Lo que aprendí sobre el agua" autocomplete="off">
+          </label>
+          <label for="post-subject">Materia
+            <select id="post-subject"></select>
+          </label>
+        </div>
+        <label for="post-note">Resumen corto
+          <input id="post-note" type="text" maxlength="160" placeholder="Una o dos frases sobre el tema" autocomplete="off">
+        </label>
+        <p class="hint" id="hint" role="status"></p>
+        <button class="btn" type="submit">Publicar entrada</button>
+      </form>
+    </section>
+
+    <aside class="side">
+      <div class="card about">
+        <h3>Sobre este blog</h3>
+        <div class="row">
+          <div class="avatar me" id="av-author2" aria-hidden="true">?</div>
+          <div><span class="rl">Autor/a</span><span class="nm" id="nm-author">Tu nombre</span></div>
+        </div>
+        <div class="row">
+          <div class="avatar mate" id="av-mate2" aria-hidden="true">+</div>
+          <div><span class="rl">Colega</span><span class="nm" id="nm-mate">Por definir</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Tareas de la semana</h3>
+        <p class="count" id="task-count"></p>
+        <div class="progress" aria-hidden="true"><i id="bar"></i></div>
+        <ul class="tasks" id="tasks"></ul>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="pagefoot">Mi blog estudiantil &middot; hecho con ganas de aprender</footer>
+</main>
+
+<script>
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var KEY = "portada-blog-estudiantil-v2";
+  var SUBJECTS = ["Matemáticas", "Lengua", "Ciencias", "Historia", "Inglés", "Estudio"];
+  var EXAMPLES = [
+    { t: "Cómo organizo mi semana de estudio", m: "Estudio", x: "Bloques de 40 minutos con descansos de 10 para no cansarme." },
+    { t: "Resumen de la clase de fracciones", m: "Matemáticas", x: "Sumar fracciones con distinto denominador paso a paso." },
+    { t: "Mi lectura del mes", m: "Lengua", x: "Lo que me gustó del libro y una pregunta para comentar en clase." },
+    { t: "Experimento: ¿qué planta crece más rápido?", m: "Ciencias", x: "Tres plantas, tres lugares de la casa y una tabla para anotar." },
+    { t: "Línea de tiempo de la independencia", m: "Historia", x: "Las fechas más importantes ordenadas en una sola hoja." }
+  ];
+  var TASKS = [
+    "Terminar el resumen de Ciencias",
+    "Practicar 10 ejercicios de fracciones",
+    "Leer dos capítulos del libro",
+    "Repasar vocabulario de Inglés"
+  ];
+
+  var state = { a: "Alexis Elian Reyes Reinoso", m: "DR. Jose Maria Velasco Ibarra", c: "", posts: [], done: {} };
+  var filter = "Todas";
+
+  try {
+    var s = JSON.parse(localStorage.getItem(KEY) || "null");
+    if (s) { state.a = s.a || state.a; state.m = s.m || state.m; state.c = s.c || ""; state.posts = s.posts || []; state.done = s.done || {}; }
+  } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+
+  function initials(text, empty) {
+    var p = text.trim().split(/\s+/).filter(Boolean).filter(function (w, i) {
+      return !(i === 0 && /^(dr|dra|ing|lic|prof|msc)\.?$/i.test(w));
+    });
+    if (!p.length) return empty;
+    return (p[0][0] + (p.length > 1 ? p[p.length - 1][0] : "")).toUpperCase();
+  }
+
+  /* ----- portada ----- */
+  var author = $("author"), mate = $("mate");
+  var buttons = document.querySelectorAll(".swatches button");
+  function setColor(c) {
+    if (!c) return;
+    document.documentElement.style.setProperty("--accent", c);
+    buttons.forEach(function (b) { b.setAttribute("aria-pressed", String(b.dataset.color === c)); });
+  }
+  function paintNames() {
+    var ia = initials(state.a, "?"), im = initials(state.m, "+");
+    $("av-author").textContent = ia; $("av-author2").textContent = ia;
+    $("av-mate").textContent = im; $("av-mate2").textContent = im;
+    $("nm-author").textContent = state.a.trim() || "Tu nombre";
+    $("nm-mate").textContent = state.m.trim() || "Por definir";
+    $("who-author").textContent = state.a.trim() || "estudiante";
+    $("who-mate-line").textContent = state.m.trim()
+      ? "Este blog lo armo junto a " + state.m.trim() + "."
+      : "Pronto sumaré a mi colega.";
+  }
+  author.value = state.a; mate.value = state.m; setColor(state.c);
+  author.addEventListener("input", function () { state.a = author.value; paintNames(); save(); });
+  mate.addEventListener("input", function () { state.m = mate.value; paintNames(); save(); });
+  buttons.forEach(function (b) {
+    b.addEventListener("click", function () { state.c = b.dataset.color; setColor(state.c); save(); });
+  });
+  $("date").textContent = new Date().toLocaleDateString("es-EC", { day: "numeric", month: "long", year: "numeric" });
+
+  /* ----- entradas ----- */
+  function allEntries() {
+    return state.posts.map(function (p) { return { t: p.t, m: p.m, x: p.x, d: p.d, own: true }; })
+      .concat(EXAMPLES.map(function (p) { return { t: p.t, m: p.m, x: p.x, own: false }; }));
+  }
+  function renderChips() {
+    var box = $("chips");
+    box.textContent = "";
+    ["Todas"].concat(SUBJECTS).forEach(function (name) {
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "chip"; b.textContent = name;
+      b.setAttribute("aria-pressed", String(name === filter));
+      b.addEventListener("click", function () { filter = name; renderChips(); renderEntries(); });
+      box.appendChild(b);
+    });
+  }
+  function renderEntries() {
+    var ul = $("entries");
+    ul.textContent = "";
+    var list = allEntries().filter(function (e) { return filter === "Todas" || e.m === filter; });
+    if (!list.length) {
+      var li = document.createElement("li");
+      li.className = "empty";
+      li.textContent = "Todavía no hay entradas de " + filter + ". Escribe la primera abajo.";
+      ul.appendChild(li);
+      return;
+    }
+    list.forEach(function (e) {
+      var li = document.createElement("li"); li.className = "entry";
+      var meta = document.createElement("div"); meta.className = "meta";
+      var tag = document.createElement("span"); tag.className = "tag"; tag.textContent = e.m;
+      meta.appendChild(tag);
+      var tail = document.createElement("span");
+      if (e.own) { tail.textContent = e.d; } else { tail.className = "tag ex"; tail.textContent = "Entrada de ejemplo"; }
+      meta.appendChild(tail);
+      var h = document.createElement("h4"); h.textContent = e.t;
+      li.appendChild(meta); li.appendChild(h);
+      if (e.x) { var p = document.createElement("p"); p.textContent = e.x; li.appendChild(p); }
+      ul.appendChild(li);
+    });
+  }
+  var sel = $("post-subject");
+  SUBJECTS.forEach(function (name) {
+    var o = document.createElement("option"); o.value = name; o.textContent = name; sel.appendChild(o);
+  });
+  $("composer").addEventListener("submit", function (ev) {
+    ev.preventDefault();
+    var title = $("post-title").value.trim();
+    if (!title) { $("hint").textContent = "Escribe un título para publicar la entrada."; $("post-title").focus(); return; }
+    state.posts.unshift({
+      t: title, m: sel.value, x: $("post-note").value.trim(),
+      d: new Date().toLocaleDateString("es-EC", { day: "numeric", month: "short" })
+    });
+    save();
+    $("post-title").value = ""; $("post-note").value = "";
+    $("hint").textContent = "Entrada publicada.";
+    filter = "Todas"; renderChips(); renderEntries();
+  });
+  $("post-title").addEventListener("input", function () { $("hint").textContent = ""; });
+
+  /* ----- tareas ----- */
+  function renderTasks() {
+    var ul = $("tasks");
+    ul.textContent = "";
+    TASKS.forEach(function (name, i) {
+      var li = document.createElement("li");
+      var lab = document.createElement("label");
+      var cb = document.createElement("input"); cb.type = "checkbox"; cb.id = "task-" + i;
+      cb.checked = !!state.done[i];
+      var span = document.createElement("span"); span.textContent = name;
+      cb.addEventListener("change", function () { state.done[i] = cb.checked; save(); paintProgress(); });
+      lab.appendChild(cb); lab.appendChild(span); li.appendChild(lab); ul.appendChild(li);
+    });
+    paintProgress();
+  }
+  function paintProgress() {
+    var n = TASKS.filter(function (_, i) { return state.done[i]; }).length;
+    $("task-count").textContent = n + " de " + TASKS.length + " tareas listas";
+    $("bar").style.width = (n / TASKS.length * 100) + "%";
+  }
+
+  /* ----- navegación entre portada y blog ----- */
+  function route() {
+    var blog = location.hash === "#blog";
+    $("view-blog").hidden = !blog;
+    $("view-cover").hidden = blog;
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener("hashchange", route);
+
+  paintNames(); renderChips(); renderEntries(); renderTasks(); route();
+})();
+</script>
+
+</body></html>
